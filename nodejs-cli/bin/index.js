@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
-const { Command } = require("commander");
-const generateProject = require("../lib/generate");
+import { Command } from "commander";
+import generateProject from "../lib/generate.js";
 
 const program = new Command();
 

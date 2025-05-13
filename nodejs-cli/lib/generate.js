@@ -1,7 +1,11 @@
-const fs = require("fs-extra");
-const path = require("path");
-const chalk = require("chalk");
-const ejs = require("ejs");
+import fs from "fs-extra";
+import path from "path";
+import chalk from "chalk";
+import ejs from "ejs";
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const TEMPLATE_DIR = path.join(__dirname, "..", "templates");
 
@@ -39,4 +43,4 @@ async function generateProject(projectName) {
   }
 }
 
-module.exports = generateProject;
+export default generateProject;
