@@ -1,16 +1,16 @@
-import fs from "fs-extra";
-import path from "path";
-import chalk from "chalk";
-import ejs from "ejs";
+const fs = require("fs-extra");
+const path = require("path");
+const chalk = require("chalk");
+const ejs = require("ejs");
 
 const TEMPLATE_DIR = path.join(__dirname, "..", "templates");
 
-const renderFile = async (filePath: string, data: Record<string, any>) => {
+const renderFile = async (filePath, data) => {
   const content = await fs.readFile(filePath, "utf-8");
   return ejs.render(content, data);
 };
 
-async function generateProject(projectName: string) {
+async function generateProject(projectName) {
   const targetPath = path.join(process.cwd(), projectName);
 
   if (fs.existsSync(targetPath)) {
@@ -20,7 +20,7 @@ async function generateProject(projectName: string) {
 
   try {
     await fs.copy(TEMPLATE_DIR, targetPath, {
-      filter: (src: string) => !src.endsWith(".ejs"),
+      filter: (src) => !src.endsWith(".ejs"),
     });
 
     // Render ejs files
@@ -39,4 +39,4 @@ async function generateProject(projectName: string) {
   }
 }
 
-export default generateProject;
+module.exports = generateProject;
