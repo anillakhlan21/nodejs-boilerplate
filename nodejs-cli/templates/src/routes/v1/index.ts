@@ -1,13 +1,15 @@
 import { Router } from 'express';
 
 // Import feature-specific routes
-import {authRoutes, exampleRoutes } from '../../modules';
+import {authRoutes, roleRoutes, userRoutes } from '../../modules';
+import { authMiddleware } from '../../middlewares/auth.middleware';
 
 const router = Router();
 
 // Base routes
-router.use('/example', exampleRoutes);
 router.use('/auth', authRoutes);
+router.use('/user', authMiddleware,  userRoutes);
+router.use('/role', authMiddleware,  roleRoutes);
 
 // Health check
 router.get('/health', (req, res) => {
