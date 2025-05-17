@@ -1,12 +1,12 @@
 import { Request, Response, NextFunction } from 'express';
-import { AuthService } from './auth.service';
-import { sendResponse } from '../../utils/apiResponse.util';
+import { AuthService } from './auth.service.js';
+import ApiResponse from '../../utils/apiResponse.util.js';
 
 export class AuthController {
   static async register(req: Request, res: Response, next: NextFunction) {
     try {
       const user = await AuthService.register(req.body);
-      sendResponse(res, 201, true, user, 'User registered successfully');
+      return ApiResponse.created(user, 'User registered successfully').send(res);
     } catch (error) {
       next(error);
     }
@@ -15,13 +15,17 @@ export class AuthController {
   static async login(req: Request, res: Response, next: NextFunction) {
     try {
       const tokenData = await AuthService.login(req.body);
-      sendResponse(res, 200, true, tokenData, 'Login successful');
+      return ApiResponse.ok(tokenData, 'Login successful').send(res);
     } catch (error) {
       next(error);
     }
   }
 
-  static async getProfile(req: Request, res: Response) {
-    sendResponse(res, 200, true, req.user, 'User profile fetched');
+  static async getProfile(req: Request, res: Response, next: NextFunction) {
+    try {
+      return ApiResponse.ok(req.user, 'User profile fetched').send(res);
+    } catch (error) {
+      next(error);
+    }
   }
 }

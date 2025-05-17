@@ -1,4 +1,5 @@
 import mongoose, { Document, Schema, Types } from 'mongoose';
+import { IRole } from '../role/role.model.js';
 
 // 1. Interface for type safety
 export interface IUser extends Document {
@@ -6,11 +7,12 @@ export interface IUser extends Document {
   lastName: string;
   email: string;
   password: string;
-  role: Types.ObjectId; // Ref to Role
+  roleId: Types.ObjectId; // Ref to Role
   createdAt: Date;
   updatedAt: Date;
   fullName: string; // virtual
   comparePassword(candidatePassword: string): Promise<boolean>;
+  role: IRole;
 }
 
 // 2. Define schema
@@ -39,7 +41,7 @@ const UserSchema = new Schema<IUser>(
       minlength: 6,
       select: false,
     },
-    role: {
+    roleId: {
       type: Schema.Types.ObjectId,
       ref: 'Role',
       required: [true, 'Role is required'],
@@ -53,7 +55,7 @@ const UserSchema = new Schema<IUser>(
 );
 
 // 3. Index
-UserSchema.index({ email: 1 }, { unique: true });
+// UserSchema.index({ email: 1 }, { unique: true });
 
 // 4. Virtuals
 UserSchema.virtual('fullName').get(function (this: IUser) {
@@ -61,12 +63,12 @@ UserSchema.virtual('fullName').get(function (this: IUser) {
 });
 
 // (Optional) If you frequently populate role name
-UserSchema.virtual('roleName', {
+UserSchema.virtual('role', {
   ref: 'Role',
-  localField: 'role',
+  localField: 'roleId',
   foreignField: '_id',
   justOne: true,
-  options: { select: 'name' },
+  // options: { select: 'name' },
 });
 
 // 5. Pre-save middleware (hash password)
@@ -80,12 +82,16 @@ UserSchema.pre<IUser>('save', async function (next) {
   next();
 });
 
+UserSchema.pre<IUser>('find', async function (next) {
+  this.populate('role');
+  next();
+});
+
 // 6. Instance method
-UserSchema.methods.comparePassword = async function (
-  candidatePassword: string
-): Promise<boolean> {
+UserSchema.methods.comparePassword = async function (candidatePassword: string): Promise<boolean> {
   const bcrypt = await import('bcryptjs');
-  return bcrypt.compare(candidatePassword, this.password);
+  const isMatch = await bcrypt.compare(candidatePassword, this.password);
+  return isMatch;
 };
 
 // 7. Transform JSON output

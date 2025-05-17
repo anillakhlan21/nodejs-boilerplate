@@ -2,7 +2,7 @@ import mongoose, { Document, Schema } from 'mongoose';
 
 // 1. Interface for type safety
 export interface IRole extends Document {
-  name: 'superAdmin' | 'admin' | 'customer';
+  name: string;
   description: string;
   permissions: string[]; // array of permission keys
   createdAt: Date;
@@ -15,7 +15,6 @@ const RoleSchema = new Schema<IRole>(
   {
     name: {
       type: String,
-      enum: ['superAdmin', 'admin', 'customer'],
       required: [true, 'Role name is required'],
       unique: true,
       trim: true,
@@ -38,7 +37,7 @@ const RoleSchema = new Schema<IRole>(
 );
 
 // 3. Index
-RoleSchema.index({ name: 1 }, { unique: true });
+// RoleSchema.index({ name: 1 }, { unique: true });
 
 // 4. Virtual
 RoleSchema.virtual('permissionCount').get(function (this: IRole) {
