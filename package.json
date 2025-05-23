@@ -30,7 +30,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "npm run build",
-    "link": "npm link"
+    "link": "npm link",
+    "prepare": "husky install",
+    "commit": "cz"
   },
   "dependencies": {
     "chalk": "^5.4.1",
@@ -40,7 +42,17 @@
     "inquirer": "^12.6.1"
   },
   "devDependencies": {
+    "@commitlint/cli": "^19.8.1",
+    "@commitlint/config-conventional": "^19.8.1",
+    "commitizen": "^4.3.1",
+    "cz-conventional-changelog": "^3.3.0",
     "eslint": "^9.27.0",
+    "husky": "^9.1.7",
     "prettier": "^3.5.3"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }
