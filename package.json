@@ -1,0 +1,46 @@
+{
+  "name": "@anillakhlan/scaffy",
+  "description": "CLI tool to scaffold scalable Express + TypeScript apps with clean architecture",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "index.js",
+  "bin": {
+    "scaffy": "./bin/index.js"
+  },
+  "keywords": [
+    "scaffolding",
+    "cli",
+    "express",
+    "typescript",
+    "nodejs",
+    "clean-architecture"
+  ],
+  "author": "Anil Lakhlan",
+  "license": "MIT",
+  "engines": {
+    "node": ">=16"
+  },
+  "files": [
+    "bin",
+    "lib",
+    "templates",
+    "src",
+    "README.md"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npm run build",
+    "link": "npm link"
+  },
+  "dependencies": {
+    "chalk": "^5.4.1",
+    "commander": "^13.1.0",
+    "ejs": "^3.1.10",
+    "fs-extra": "^11.3.0",
+    "inquirer": "^12.6.1"
+  },
+  "devDependencies": {
+    "eslint": "^9.27.0",
+    "prettier": "^3.5.3"
+  }
+}
